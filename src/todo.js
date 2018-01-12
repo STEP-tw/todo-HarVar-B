@@ -32,9 +32,10 @@ class ToDo{
   }
   editItem(oldName,newName,newDescription){
     let item = this.items[oldName];
-    let newItem = new Item(newName,newDescription||item.getDescription);
+    item.changeName(newName);
+    if(newDescription)item.changeDescription(newDescription);
     this.deleteItem(oldName);
-    this.addItem(newName,newDescription||item.getDescription);
+    this.items[newName]=item;
   }
   checkItems(){
     let itemNames = Object.keys(this.items);

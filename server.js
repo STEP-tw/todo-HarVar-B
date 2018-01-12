@@ -12,6 +12,12 @@ app.get("/index.html",(req,res)=>{
   res.write(`<p>welcome ${user.name}</p>`);
   res.end();
 });
+app.get("/homePage.html",(req,res)=>{
+  // console.log("req.cookies:\n",req.cookies);
+  res.setHeader('Content-type','text/html');
+  res.write(fs.readFileSync('./homePage.html'));
+  res.end();
+});
 app.get("/login.html",(req,res)=>{
   // console.log("req.cookies:\n",req.cookies);
   res.setHeader('Content-type','text/html');
@@ -25,7 +31,7 @@ app.post('/login.html',(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
     res.setHeader('Set-Cookie',`logInFailed=true`);
-    res.redirect('/login.html');
+    res.redirect('/homePage.html');
     res.end();
     return;
   }
@@ -40,20 +46,6 @@ app.get('/logout.html',(req,res)=>{
   res.redirect('/login.html');
   res.end();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const PORT = 8000;
 let server = http.createServer(app);

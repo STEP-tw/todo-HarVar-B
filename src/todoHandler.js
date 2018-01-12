@@ -36,9 +36,10 @@ class ToDoHandler{
   }
   editToDo(oldName,newName,newDescription){
     let todo = this.todo_s[oldName];
-    let newToDo = new ToDo(newName,newDescription||todo.getDescription);
+    todo.changeName(newName);
+    if(newDescription) todo.changeDescription(newDescription);
     this.deleteToDo(oldName);
-    this.todo_s[newName]=newToDo;
+    this.todo_s[newName]=todo;
   }
   get todo_s_count(){
     return Object.keys(this.todo_s).length;
