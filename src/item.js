@@ -13,6 +13,9 @@ class Item{
   get isDone(){
     return this.done;
   }
+  changeName(name){
+    this.name=name;
+  }
   setDescription(description){
     this.description=description;
   }
