@@ -11,7 +11,11 @@ class ToDoHandler{
   readFile(){
     if(fs.existsSync(this.storagePath)){
       let data = fs.readFileSync(this.storagePath);
-      this.todo_s = JSON.parse(data);
+      try{
+        this.todo_s = JSON.parse(data);
+        // this.rebuildPrototypes();
+      }catch(e){console.log(e);}
+
     }
   }
   addItem(todo,itemName,description){
