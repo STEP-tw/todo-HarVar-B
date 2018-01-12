@@ -37,7 +37,7 @@ describe("ToDo class object should:",()=>{
     todo.deleteItem("item1_name");
     assert.deepEqual(todo.getItem("item1_name"),undefined);
   });
-  it("be able to edit an item",()=>{
+  describe("be able to edit",()=>{
     it("name of item",()=>{
       todo.editItem("item1_name","name1");
       let expected = new Item("name1","item1_desc");
@@ -45,8 +45,8 @@ describe("ToDo class object should:",()=>{
     });
     it("description of item",()=>{
       todo.editItem("item1_name","item1_name","descr1");
-      let expected = new Item("name1","descr1");
-      assert.deepEqual(todo.getItem("name1"),expected);
+      let expected = new Item("item1_name","descr1");
+      assert.deepEqual(todo.getItem("item1_name"),expected);
     });
     it("name & description of item",()=>{
       todo.editItem("item1_name","name1","descr1");

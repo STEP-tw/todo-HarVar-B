@@ -1,4 +1,5 @@
 const Item = require('./item.js');
+
 class ToDo{
   constructor(title,description){
     this.title=title;
@@ -34,6 +35,15 @@ class ToDo{
     let newItem = new Item(newName,newDescription||item.getDescription);
     this.deleteItem(oldName);
     this.addItem(newName,newDescription||item.getDescription);
+  }
+  checkItems(){
+    let itemNames = Object.keys(this.items);
+    this._doneItems = itemNames.filter((name)=>{return this.items[name].isDone;});
+
+  }
+  get doneItems(){
+    this.checkItems();
+    return this._doneItems;
   }
 }
 
