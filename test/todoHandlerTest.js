@@ -19,7 +19,7 @@ describe("A ToDoHandler class object should:",()=>{
     harshab.createNew("battleship","should complete by this sunday");
     harshab.createNew("flowerCatalog","should complete backend code by next tuesday");
     harshab.deleteToDo("battleship");
-    assert.equal(harshab.todo_s_count,1);
+    assert.equal(harshab.todo_s_count,2);
   });
   describe("be able to edit",()=>{
     it("name of todo",()=>{
