@@ -33,14 +33,19 @@ class ToDo{
   editItem(oldName,newName,newDescription){
     let item = this.items[oldName];
     item.changeName(newName);
-    if(newDescription)item.changeDescription(newDescription);
+    // if(newDescription)item.setDescription(newDescription);
     this.deleteItem(oldName);
     this.items[newName]=item;
   }
   checkItems(){
     let itemNames = Object.keys(this.items);
     this._doneItems = itemNames.filter((name)=>{return this.items[name].isDone;});
-
+  }
+  changeTitle(title){
+    this.title=title;
+  }
+  changeDescription(description){
+    this.description=description;
   }
   get doneItems(){
     this.checkItems();

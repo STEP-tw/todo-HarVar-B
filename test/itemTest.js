@@ -22,16 +22,16 @@ describe("item class object should:",()=>{
     assert.equal(item.getName,expected);
   });
 
-  it("give it's description when asked for.",()=>{
-    let item = new Item("item_name","using for a test");
-    let expected = "using for a test";
-    assert.deepEqual(item.getDescription,expected);
-  });
+  // it("give it's description when asked for.",()=>{
+  //   let item = new Item("item_name","using for a test");
+  //   let expected = "using for a test";
+  //   assert.deepEqual(item.getDescription,expected);
+  // });
 
-  it("be able to set own description.",()=>{
-    item.setDescription("descibing after creation of object");
-    let expected = "descibing after creation of object";
-    assert.deepEqual(item.getDescription,expected);
-
-  });
+  // it("be able to set own description.",()=>{
+  //   item.setDescription("descibing after creation of object");
+  //   let expected = "descibing after creation of object";
+  //   assert.deepEqual(item.getDescription,expected);
+  //
+  // });
 });

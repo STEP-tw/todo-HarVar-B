@@ -11,7 +11,7 @@ describe("A ToDoHandler class object should:",()=>{
     harshab.createNew("battleship","should complete by this sunday");
     let expected = new ToDo("battleship","should complete by this sunday")
     assert.deepEqual(harshab.getToDo("battleship"),expected);
-    let expectedPath = "./users/harshab.json";
+    let expectedPath = "./users/harshab.js";
     assert.equal(harshab.getStoragePath,expectedPath);
   });
   it("be able to delete a todo",()=>{

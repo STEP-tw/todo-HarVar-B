@@ -1,0 +1,27 @@
+{
+  "name": "todo-harvar-b",
+  "version": "1.0.0",
+  "description": "## Objective",
+  "main": "homePage.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEP-tw/todo-HarVar-B.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STEP-tw/todo-HarVar-B/issues"
+  },
+  "homepage": "https://github.com/STEP-tw/todo-HarVar-B#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.1.0"
+  }
+}
