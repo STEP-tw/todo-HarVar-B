@@ -1,21 +1,19 @@
 const ToDo = require('./todo.js');
-const fs = require('fs');
 
-class ToDoHandler{
+class User{
   constructor(name){
     this.userName=name;
-    this.storagePath="./users/"+name+".js";
     this.todo_s={};
-    this.readFile();
   }
-  readFile(){
-    if(fs.existsSync(this.storagePath)){
-      let data = null;
-      try{
-        data =  fs.readFileSync(this.storagePath,'utf-8');
-        this.todo_s = JSON.parse(data);
-        // this.rebuildPrototypes();
-      }catch(e){console.error(e);}
+  rebuildTodo(todoName){
+    this.todo_s[todoName].prototype = new ToDo().prototype;
+    this.todo_s[todoName].rebuildItems();
+  }
+  loadToDo_s(string){
+    this.todo_s = JSON.parse(string);
+    for (var i = 0; i < Object.keys(this.todo_s).length; i++) {
+      this.todo_s[Object.keys(this.todo_s)[i]].__proto__=new ToDo().__proto__;
+      this.todo_s[Object.keys(this.todo_s)[i]].rebuildItems()
     }
   }
   addItem(todo,itemName,description){
@@ -44,9 +42,9 @@ class ToDoHandler{
   get todo_s_count(){
     return Object.keys(this.todo_s).length;
   }
-  saveToDo_s(){
-    let data = JSON.stringify(this.todo_s);
-    fs.writeFileSync(this.storagePath,data,'utf-8');
+  writeTodDo_s(writeFunc){
+    let string = JSON.stringify(this.todo_s);
+    writeFunc(string);
   }
 }
-module.exports= ToDoHandler;
+module.exports= User;

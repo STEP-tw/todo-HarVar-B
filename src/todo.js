@@ -6,6 +6,11 @@ class ToDo{
     this.description=description;
     this.items={};
   }
+  rebuildItems(){
+    for (var i = 0; i < Object.keys(this.items).length; i++) {
+      this.items[Object.keys(this.items)[i]].__proto__=new Item().__proto__;
+    }
+  }
   get getTitle(){
     return this.title;
   }

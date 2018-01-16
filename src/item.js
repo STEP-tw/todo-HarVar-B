@@ -1,5 +1,5 @@
 class Item{
-  constructor(name,description){
+  constructor(name){
     this.name=name;
     // this.description=description;
     this.done=false;
