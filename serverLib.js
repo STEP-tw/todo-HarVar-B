@@ -1,20 +1,19 @@
 let fs = require('fs');
-let registered_users = [{userName:'dev',name:'sridevs'}];
+let registered_users = [{userName:'harshab',name:'Harsha Vardhana B'}];
 let setContentType = function (fileName) {
   let headers = {
-    js: {'Content-Type': 'text/javascript'},
-    html: {'Content-Type': 'text/html'},
-    css: {'Content-Type': 'text/css'},
-    jpg: {'Content-Type': 'img/jpg'},
-    pdf: {'Content-Type': 'application/pdf'},
-    gif: {'Content-Type': 'image/gif'},
-    ico: {'Content-Type': 'image/ico'},
-    txt: {'Content-Type': 'text/plain'},
-    undefined: {'Content-Type': 'text/plain'}
+    js: 'text/javascript',
+    html: 'text/html',
+    css: 'text/css',
+    jpg: 'img/jpg',
+    pdf: 'application/pdf',
+    gif: 'image/gif',
+    ico: 'image/ico',
+    txt: 'text/plain',
+    undefined: 'text/plain'
   }
-
   let fileType = fileName.split('.')[2];
-  console.log('Content-Type has been set as', headers[fileType]);
+  // console.log('Content-Type has been set as', headers[fileType]);
   return headers[fileType];
 };
 
@@ -38,14 +37,23 @@ let getTime = function () {
   return joinStrings(humanReadableDate,humanReadableTime);
 };
 
-let handleRequests = function (request, response) {
-  // Read the requested file content from file system
+let handleRequests = function (request,response) {
   let fileName = getFileName(request);
+  // console.log("Request for " + fileName + " received.");
+  // console.log(request);
   // Print the name of the file for which request is made.
-  console.log("Request for " + fileName + " received.");
   let data = fs.readFileSync(fileName);
-  if(request.cookies.logInFailed) response.write('<p>logIn Failed</p>');
-  response.write(data);
+  // Read the requested file content from file system
+  // console.log(request.user);
+  // console.log(setContentType(fileName));
+  if(request.user &&request.headers.cookies.sessionid){
+    if(request.cookies.logInFailed) response.write('<p>logIn Failed</p>');
+    response.setHeader('Content-Type',setContentType(fileName))
+    response.write(data);
+    response.end();
+    return;
+  }
+  response.redirect('/loginPage.html')
   response.end();
 }
 

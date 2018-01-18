@@ -16,8 +16,8 @@ class User{
       this.todo_s[Object.keys(this.todo_s)[i]].rebuildItems()
     }
   }
-  addItem(todo,itemName,description){
-    this.todo_s[todo].addItem(itemName,description);
+  addItem(todo,itemName){
+    this.todo_s[todo].addItem(itemName);
   }
   createNew(name,description){
     let todo = new ToDo(name,description);
@@ -42,7 +42,7 @@ class User{
   get todo_s_count(){
     return Object.keys(this.todo_s).length;
   }
-  writeTodDo_s(writeFunc){
+  write(writeFunc){
     let string = JSON.stringify(this.todo_s);
     writeFunc(string);
   }

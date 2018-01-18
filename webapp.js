@@ -10,7 +10,7 @@ const parseBody = text=> {
   return text && text.split('&').map(toKeyValue).reduce(accumulate,{}) || {};
 }
 let redirect = function(path){
-  console.log(`redirecting to ${path}`);
+  // console.log(`redirecting to ${path}`);
   this.statusCode = 302;
   this.setHeader('location',path);
   this.end();
@@ -49,7 +49,7 @@ let urlIsOneOf = function(urls){
   return urls.includes(this.url);
 }
 const main = function(req,res){
-  console.log("## logging from webApp ##\n",req.headers);
+  // console.log("## logging from webApp ##\n",req.headers);
   res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
   req.cookies = parseCookies(req.headers.cookie||'');

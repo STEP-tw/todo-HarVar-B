@@ -2,7 +2,7 @@ const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
 const fs = require('fs');
 const handleRequests = require('./serverLib.js').handleRequests;
-const todoHandler = require('./src/todoHandler.js');
+const User = require('./src/user.js');
 let registered_users = [{userName:'harshab',name:'Harsha V Boorla'}];
 let toS = o=>JSON.stringify(o,null,2);
 /*============================================================================*/
@@ -15,7 +15,7 @@ let logRequest = (req,res)=>{
     `BODY=> ${toS(req.body)}`,''].join('\n');
   fs.appendFile('request.log',text,()=>{});
 
-  console.log(`${req.method} ${req.url}`);
+  // console.log(`${req.method} ${req.url}`);
 }
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
@@ -33,8 +33,16 @@ app.use(logRequest);
 app.use(loadUser);
 app.get('/',handleRequests)
 app.get('/homePage.html',handleRequests);
-app.get('/viewList.html',handleRequests);
 app.get('/css/style.css',handleRequests);
+app.get('/viewList.html',handleRequests);
+app.get("/todoS",(req,res)=>{
+  // console.log(req.body);
+  let user = req.cookies.username;
+  let handler = new User(user);
+  res.write(JSON.stringify(handler.todo_s));
+  res.end();
+});
+app.get("/viewList.js",handleRequests);
 app.get('/logout',(req,res)=>{
   res.setHeader('Set-Cookie',[`sessionid=null;Expires=${new Date(1).toUTCString()}`,`username=null;Expires=${new Date(1).toUTCString()}`]);
   res.redirect('/');
@@ -42,7 +50,7 @@ app.get('/logout',(req,res)=>{
 app.post('/',(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
-    res.setHeader('Set-Cookie',`logInFailed=true`);
+    res.setHeader('Set-Cookie',`logInFailed=true;max-age=5;`);
     res.redirect('/');
     return;
   }
@@ -51,24 +59,16 @@ app.post('/',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/homePage.html');
 });
-app.get("/todoS",(req,res)=>{
-  console.log(req.body);
-  let user = req.cookies.username;
-  let handler = new todoHandler(user);
-  res.write(JSON.stringify(handler.todo_s));
-  res.end();
-});
-app.get("/viewList.js",handleRequests);
 app.post("/homePage.html",(req,res)=>{
-  console.log(req.body);
+  // console.log(req.body);
   let user = req.cookies.username;
-  let handler = new todoHandler(user);
+  let handler = new User(user);
   let title = req.body.todoTitle.toString();
-  console.log(title);
+  // console.log(title);
   let description = req.body.todoDescription.toString();
-  console.log(description);
+  // console.log(description);
   handler.createNew(title,description);
-  console.log(handler);
+  // console.log(handler);
   handler.saveToDo_s();
   res.redirect('/homePage.html')
   res.end();
