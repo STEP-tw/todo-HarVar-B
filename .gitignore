@@ -1,4 +1,5 @@
 node_modules/
+test/testFrameWork/
 *.log
 .DS_Store
 .nyc_output

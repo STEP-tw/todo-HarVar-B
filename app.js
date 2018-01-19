@@ -3,7 +3,7 @@ const WebApp = require('./webapp');
 const fs = require('fs');
 const handleRequests = require('./serverLib.js').handleRequests;
 const User = require('./src/user.js');
-let registered_users = [{userName:'harshab',name:'Harsha V Boorla'}];
+let registered_users = [{userName:'harshab',name:'Harsha Vardhana B'}];
 let toS = o=>JSON.stringify(o,null,2);
 /*============================================================================*/
 let logRequest = (req,res)=>{
@@ -15,7 +15,7 @@ let logRequest = (req,res)=>{
     `BODY=> ${toS(req.body)}`,''].join('\n');
   fs.appendFile('request.log',text,()=>{});
 
-  // console.log(`${req.method} ${req.url}`);
+  console.log(`${req.method} ${req.url}`);
 }
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
@@ -24,21 +24,27 @@ let loadUser = (req,res)=>{
     req.user = user;
   }
 };
+
+const redirectToLoginPage = (req,res)=>{
+  if(req.urlIsOneOf(['/','/homePage.html'])&&!req.user) res.redirect('/loginPage.html');
+}
+
 let redirectLoggedInUserToHome = (req,res)=>{
-  console.log(req.urlIsOneOf(['/loginPage.html']),'what happened');
-  if(req.urlIsOneOf(['/loginPage.html']) && req.user) res.redirect('homePage.html');
+  if(req.urlIsOneOf(['/','/loginPage.html']) && req.user) res.redirect('/homePage.html');
 }
 /*============================================================================*/
 let app = WebApp.create();
-app.use(redirectLoggedInUserToHome)
-app.use(loadUser);
 app.use(logRequest);
-app.get('/',handleRequests)
+app.use(loadUser);
+app.use(redirectLoggedInUserToHome);
+app.use(redirectToLoginPage);
+// app.get('/',handleRequests);
 app.get('/homePage.html',handleRequests);
 app.get('/css/style.css',handleRequests);
 app.get('/viewList.html',handleRequests);
+app.get("/viewList.js",handleRequests);
+
 app.get('/loginPage.html',(req,res)=>{
-  // console.log(req);
   if(req.user && req.user.sessionid){
     res.redirect('/homePage.html');
     res.end();
@@ -49,23 +55,22 @@ app.get('/loginPage.html',(req,res)=>{
   res.end();
 });
 app.get("/todoS",(req,res)=>{
-  // console.log(req.body);
   let user = req.cookies.username;
   let handler = new User(user);
   let userData = fs.readFileSync('./users/'+user+'.json','utf-8');
   res.write(userData);
   res.end();
 });
-app.get("/viewList.js",handleRequests);
 app.get('/logout',(req,res)=>{
   res.setHeader('Set-Cookie',[`sessionid=null;Expires=${new Date(1).toUTCString()}`,`username=null;Expires=${new Date(1).toUTCString()}`]);
   res.redirect('/');
 });
+
 app.post('/loginPage.html',(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
     res.setHeader('Set-Cookie',`logInFailed=true;max-age=5;`);
-    res.redirect('/');
+    res.redirect('/loginPage.html');
     return;
   }
   let sessionid = new Date().getTime();
@@ -74,15 +79,11 @@ app.post('/loginPage.html',(req,res)=>{
   res.redirect('/homePage.html');
 });
 app.post("/homePage.html",(req,res)=>{
-  // console.log(req.body);
   let user = req.cookies.username;
   let handler = new User(user);
   let title = req.body.todoTitle.toString();
-  // console.log(title);
   let description = req.body.todoDescription.toString();
-  // console.log(description);
   handler.createNew(title,description);
-  // console.log(handler);
   handler.saveToDo_s();
   res.redirect('/homePage.html')
   res.end();
