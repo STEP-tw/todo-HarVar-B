@@ -5,10 +5,10 @@ class User{
     this.userName=name;
     this.todo_s={};
   }
-  rebuildTodo(todoName){
-    this.todo_s[todoName].prototype = new ToDo().prototype;
-    this.todo_s[todoName].rebuildItems();
-  }
+  // rebuildTodo(todoName){
+  //   this.todo_s[todoName].prototype = new ToDo().prototype;
+  //   this.todo_s[todoName].rebuildItems();
+  // }
   loadToDo_s(string){
     this.todo_s = JSON.parse(string);
     for (var i = 0; i < Object.keys(this.todo_s).length; i++) {
@@ -19,9 +19,9 @@ class User{
   addItem(todo,itemName){
     this.todo_s[todo].addItem(itemName);
   }
-  createNew(name,description){
-    let todo = new ToDo(name,description);
-    this.todo_s[name] = todo;
+  createNew(title,description){
+    let todo = new ToDo(title,description);
+    this.todo_s[title] = todo;
   }
   get getStoragePath(){
     return this.storagePath;

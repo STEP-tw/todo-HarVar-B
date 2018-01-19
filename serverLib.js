@@ -18,8 +18,9 @@ let setContentType = function (fileName) {
 };
 
 let getFileName = function (request) {
-  let fileName = request.url.substr(1)
-  return './public/' + (fileName || 'loginPage.html');
+  console.log("+++"+request.url.substr(1)+"+++");
+  let fileName = request.url.substr(1);
+  return './public/' + (fileName || 'homePage.html');
 };
 
 let replaceEqualsWithColon = function (string) {
@@ -39,15 +40,14 @@ let getTime = function () {
 
 let handleRequests = function (request,response) {
   let fileName = getFileName(request);
-  // console.log("Request for " + fileName + " received.");
+  console.log("Request for " + fileName + " received.");
   // console.log(request);
   // Print the name of the file for which request is made.
   let data = fs.readFileSync(fileName);
   // Read the requested file content from file system
   // console.log(request.user);
   // console.log(setContentType(fileName));
-  if(request.user &&request.headers.cookies.sessionid){
-    if(request.cookies.logInFailed) response.write('<p>logIn Failed</p>');
+  if(request.user && request.cookies.sessionid){
     response.setHeader('Content-Type',setContentType(fileName))
     response.write(data);
     response.end();
