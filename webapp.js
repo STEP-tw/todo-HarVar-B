@@ -1,3 +1,4 @@
+const qs = require('querystring');
 const toKeyValue = kv=>{
     let parts = kv.split('=');
     return {key:parts[0].trim(),value:parts[1].trim()};
@@ -7,10 +8,10 @@ const accumulate = (o,kv)=> {
   return o;
 };
 const parseBody = text=> {
-  return text && text.split('&').map(toKeyValue).reduce(accumulate,{}) || {};
+  return qs.parse(text) || {};
 }
 let redirect = function(path){
-  // console.log(`redirecting to ${path}`);
+  console.log(`redirecting to ${path}`);
   this.statusCode = 302;
   this.setHeader('location',path);
   this.end();
@@ -49,17 +50,14 @@ let urlIsOneOf = function(urls){
   return urls.includes(this.url);
 }
 const main = function(req,res){
-  // console.log("## logging from webApp ##\n",req.headers);
   res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
   req.cookies = parseCookies(req.headers.cookie||'');
   let content="";
   req.on('data',data=>content+=data.toString())
   req.on('end',()=>{
-    debugger;
     req.body = parseBody(content);
     content="";
-    debugger;
     this._preprocess.forEach(middleware=>{
       if(res.finished) return;
       middleware(req,res);

@@ -13,18 +13,12 @@ let setContentType = function (fileName) {
     undefined: 'text/plain'
   }
   let fileType = fileName.split('.')[2];
-  // console.log('Content-Type has been set as', headers[fileType]);
   return headers[fileType];
 };
 
 let getFileName = function (request) {
-  console.log("+++"+request.url.substr(1)+"+++");
   let fileName = request.url.substr(1);
   return './public/' + (fileName || 'homePage.html');
-};
-
-let replaceEqualsWithColon = function (string) {
-  return string.replace('=',':');
 };
 
 let joinStrings = function (strg1,strg2) {
@@ -40,20 +34,18 @@ let getTime = function () {
 
 let handleRequests = function (request,response) {
   let fileName = getFileName(request);
-  console.log("Request for " + fileName + " received.");
-  // console.log(request);
   // Print the name of the file for which request is made.
   let data = fs.readFileSync(fileName);
   // Read the requested file content from file system
-  // console.log(request.user);
-  // console.log(setContentType(fileName));
   if(request.user && request.cookies.sessionid){
-    response.setHeader('Content-Type',setContentType(fileName))
+    console.log('request.url==========>',request.url);
+    response.setHeader('Content-Type',setContentType(fileName));
     response.write(data);
     response.end();
     return;
   }
-  response.redirect('/loginPage.html')
+  response.setHeader('Content-Type',setContentType(fileName));
+  response.write(data);
   response.end();
 }
 
