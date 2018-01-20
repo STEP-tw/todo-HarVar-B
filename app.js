@@ -76,17 +76,41 @@ app.post('/loginPage.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/homePage.html');
 });
+
+const getTodoCount = (todoHandler)=>{
+  return +Object.keys(todoHandler.todo_s).reduce((a,b)=>{
+    if(+a>+b)return a;
+    else return b;});
+}
+
+const addItems = (req,todoHandler,noOfTodos)=>{
+  let items = req.body.items;
+  items && items.forEach(content=>todoHandler.addItem(noOfTodos,content));
+  return todoHandler;
+}
+
+const addTodo = (req,user,todoHandler,noOfTodos)=>{
+    let title = req.body.title;
+    let description = req.body.description;
+    todoHandler.createNew(title,description,++noOfTodos);
+    todoHandler = addItems(req,todoHandler,noOfTodos);
+    return todoHandler;
+}
+
+const writeToFile = (user,todoHandler)=>{
+  let todos = JSON.stringify(todoHandler.todo_s,null,2);
+  fs.writeFileSync(`./users/${user.userName}.json`,todos);
+  return;
+}
+
 app.post("/addTodo.html",(req,res)=>{
   let todoHandler = new User(req.cookies.username);
   let user = registered_users.find(u=>u.userName==req.cookies.username);
-  let noOfTodos=user.todoCount;
-  let title = req.body.title;
-  let description = req.body.description;
-  let items = req.body.items;
-  todoHandler.createNew(title,description,noOfTodos);
-  items && items.forEach(content=>todoHandler.addItem(noOfTodos,content));
-  user.todoCount++;
-  res.redirect('/homePage.html')
+  todoHandler.loadToDo_s(fs.readFileSync(`./users/${user.userName}.json`));
+  let noOfTodos = getTodoCount(todoHandler);
+  todoHandler = addTodo(req,user,todoHandler,noOfTodos);
+  writeToFile(user,todoHandler);
+  res.redirect('/homePage.html');
   res.end();
 });
 

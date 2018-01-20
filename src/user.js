@@ -13,7 +13,6 @@ class User{
     }
   }
   addItem(id,itemContent){
-    console.log(`this._todo_s=======>${JSON.stringify(this._todo_s)} && id======>${id}`);
     this._todo_s[id].addItem(itemContent);
   }
   createNew(title,description,id){
@@ -35,6 +34,9 @@ class User{
   }
   get todo_s_count(){
     return Object.keys(this._todo_s).length;
+  }
+  get todo_s(){
+    return this._todo_s;
   }
   write(writeFunc){
     let string = JSON.stringify(this._todo_s);
