@@ -2,55 +2,57 @@ const Item = require('./item.js');
 
 class ToDo{
   constructor(title,description){
-    this.title=title;
-    this.description=description;
-    this.items={};
+    this._title=title;
+    this._description=description;
+    this._items={};
+    this._noOfItems=0;
   }
   rebuildItems(){
-    for (var i = 0; i < Object.keys(this.items).length; i++) {
-      this.items[Object.keys(this.items)[i]].__proto__=new Item().__proto__;
+    for (var i = 0; i < Object.keys(this._items).length; i++) {
+      this._items[Object.keys(this._items)[i]].__proto__=new Item().__proto__;
     }
   }
-  get getTitle(){
-    return this.title;
+  get title(){
+    return this._title;
   }
-  get getDescription(){
-    return this.description;
+  get description(){
+    return this._description;
   }
-  addItem(name,description){
-    let item = new Item(name,description);
-    this.items[name]=item;
+  addItem(name){
+    let item = new Item(name);
+    this._items[this._noOfItems]=item;
+    this._noOfItems++;
   }
-  get getItemsCount(){
-    return Object.keys(this.items).length;
+  get itemsCount(){
+    return Object.keys(this._items).length;
   }
   getItem(name){
-    return this.items[name];
+    return this._items[name];
   }
   tickItem(name){
-    let item = this.items[name];
+    let item = this._items[name];
     if(item.isDone){item.untick();}
       else{item.tick();}
   }
   deleteItem(name){
-    delete this.items[name];
+    delete this._items[name];
   }
   editItem(oldName,newName,newDescription){
-    let item = this.items[oldName];
-    item.changeName(newName);
+    let item = this._items[oldName];
+    item.changeContent(newName);
     // if(newDescription)item.setDescription(newDescription);
     this.deleteItem(oldName);
-    this.items[newName]=item;
+    this._items[newName]=item;
   }
   checkItems(){
-    let itemNames = Object.keys(this.items);
-    this._doneItems = itemNames.filter((name)=>{return this.items[name].isDone;});
+    let itemNames = Object.keys(this._items);
+    this._doneItems = itemNames.filter((name)=>{return this._items[name].isDone;});
   }
   changeTitle(title){
-    this.title=title;
+    this._title=title;
   }
   changeDescription(description){
-    this.description=description;
+    this._description=description;
   }
   get doneItems(){
     this.checkItems();

@@ -7,7 +7,7 @@ const getTodoS= function() {
     todoS=JSON.parse(this.responseText);
     console.log(todoS);
     let block = document.getElementById("title");
-    block.innerHTML = JSON.stringify(todoS);
+    block.innerHTML = JSON.stringify(todoS[Object.keys(todoS)[0]]);
   };
   xhttp.open("GET","todoS");
   xhttp.send();

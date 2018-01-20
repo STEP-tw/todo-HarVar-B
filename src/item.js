@@ -1,29 +1,29 @@
 class Item{
-  constructor(name){
-    this.name=name;
+  constructor(content){
+    this._content=content;
     // this.description=description;
-    this.done=false;
+    this._isDone=false;
   }
-  get getName(){
-    return this.name;
+  get content(){
+    return this._content;
   }
   // get getDescription(){
   //   return this.description;
   // }
   get isDone(){
-    return this.done;
+    return this._isDone;
   }
-  changeName(name){
-    this.name=name;
+  changeContent(content){
+    this._content=content;
   }
   // setDescription(description){
   //   this.description=description;
   // }
   tick(){
-    this.done=true;
+    this._isDone=true;
   }
   untick(){
-    this.done=false;
+    this._isDone=false;
   }
 }
 module.exports=Item;

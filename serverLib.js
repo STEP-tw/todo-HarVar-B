@@ -34,11 +34,8 @@ let getTime = function () {
 
 let handleRequests = function (request,response) {
   let fileName = getFileName(request);
-  // Print the name of the file for which request is made.
   let data = fs.readFileSync(fileName);
-  // Read the requested file content from file system
   if(request.user && request.cookies.sessionid){
-    console.log('request.url==========>',request.url);
     response.setHeader('Content-Type',setContentType(fileName));
     response.write(data);
     response.end();

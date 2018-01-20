@@ -60,3 +60,6 @@ input{
   display:block;
   box-sizing:border-box;
 }
+form{
+  padding-left: 700px;
+}

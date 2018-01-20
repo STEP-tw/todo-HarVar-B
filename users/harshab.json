@@ -1,12 +1,1 @@
-{
-  "battleship":{
-    "title":"battleship",
-    "description":"should complete by this sunday evening",
-    "items":{
-      "gameTest":{
-        "name":"gameTest",
-        "done":false
-      }
-    }
-  }
-}
+{}

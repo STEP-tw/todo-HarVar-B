@@ -2,8 +2,9 @@ const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
 const fs = require('fs');
 const handleRequests = require('./serverLib.js').handleRequests;
+const StaticFileHandler = require('./handlers/staticFileHandler');
 const User = require('./src/user.js');
-let registered_users = [{userName:'harshab',name:'Harsha Vardhana B'}];
+let registered_users = require('./users/allUsers.js')._allUsers;
 let toS = o=>JSON.stringify(o,null,2);
 /*============================================================================*/
 let logRequest = (req,res)=>{
@@ -26,7 +27,7 @@ let loadUser = (req,res)=>{
 };
 
 const redirectToLoginPage = (req,res)=>{
-  if(req.urlIsOneOf(['/','/homePage.html'])&&!req.user) res.redirect('/loginPage.html');
+  if(req.urlIsOneOf(['/','/homePage.html','/viewList.html','/addTodo.html','/viewTodo.html'])&&!req.user) res.redirect('/loginPage.html');
 }
 
 let redirectLoggedInUserToHome = (req,res)=>{
@@ -38,11 +39,8 @@ app.use(logRequest);
 app.use(loadUser);
 app.use(redirectLoggedInUserToHome);
 app.use(redirectToLoginPage);
-// app.get('/',handleRequests);
-app.get('/homePage.html',handleRequests);
-app.get('/css/style.css',handleRequests);
-app.get('/viewList.html',handleRequests);
-app.get("/viewList.js",handleRequests);
+let staticFileHandler = new StaticFileHandler();
+app.usePostProcess(staticFileHandler.requestHandler());
 
 app.get('/loginPage.html',(req,res)=>{
   if(req.user && req.user.sessionid){
@@ -78,13 +76,16 @@ app.post('/loginPage.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/homePage.html');
 });
-app.post("/homePage.html",(req,res)=>{
-  let user = req.cookies.username;
-  let handler = new User(user);
-  let title = req.body.todoTitle.toString();
-  let description = req.body.todoDescription.toString();
-  handler.createNew(title,description);
-  handler.saveToDo_s();
+app.post("/addTodo.html",(req,res)=>{
+  let todoHandler = new User(req.cookies.username);
+  let user = registered_users.find(u=>u.userName==req.cookies.username);
+  let noOfTodos=user.todoCount;
+  let title = req.body.title;
+  let description = req.body.description;
+  let items = req.body.items;
+  todoHandler.createNew(title,description,noOfTodos);
+  items && items.forEach(content=>todoHandler.addItem(noOfTodos,content));
+  user.todoCount++;
   res.redirect('/homePage.html')
   res.end();
 });

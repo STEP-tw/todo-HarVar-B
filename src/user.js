@@ -3,47 +3,41 @@ const ToDo = require('./todo.js');
 class User{
   constructor(name){
     this.userName=name;
-    this.todo_s={};
+    this._todo_s={};
   }
-  // rebuildTodo(todoName){
-  //   this.todo_s[todoName].prototype = new ToDo().prototype;
-  //   this.todo_s[todoName].rebuildItems();
-  // }
   loadToDo_s(string){
-    this.todo_s = JSON.parse(string);
-    for (var i = 0; i < Object.keys(this.todo_s).length; i++) {
-      this.todo_s[Object.keys(this.todo_s)[i]].__proto__=new ToDo().__proto__;
-      this.todo_s[Object.keys(this.todo_s)[i]].rebuildItems()
+    this._todo_s = JSON.parse(string);
+    for (var i = 0; i < Object.keys(this._todo_s).length; i++) {
+      this._todo_s[Object.keys(this._todo_s)[i]].__proto__=new ToDo().__proto__;
+      this._todo_s[Object.keys(this._todo_s)[i]].rebuildItems()
     }
   }
-  addItem(todo,itemName){
-    this.todo_s[todo].addItem(itemName);
+  addItem(id,itemContent){
+    console.log(`this._todo_s=======>${JSON.stringify(this._todo_s)} && id======>${id}`);
+    this._todo_s[id].addItem(itemContent);
   }
-  createNew(title,description){
+  createNew(title,description,id){
     let todo = new ToDo(title,description);
-    this.todo_s[title] = todo;
-  }
-  get getStoragePath(){
-    return this.storagePath;
+    this._todo_s[id] = todo;
   }
   deleteToDo(name){
-    delete this.todo_s[name];
+    delete this._todo_s[name];
   }
-  getToDo(name){
-    return this.todo_s[name];
+  getToDo(id){
+    return this._todo_s[id];
   }
-  editToDo(oldTitle,newTitle,newDescription){
-    let todo = this.todo_s[oldTitle];
+  editToDo(id,newTitle,newDescription){
+    let todo = this._todo_s[id];
     todo.changeTitle(newTitle);
     if(newDescription) todo.changeDescription(newDescription);
-    this.deleteToDo(oldTitle);
-    this.todo_s[newTitle]=todo;
+    this.deleteToDo(id);
+    this._todo_s[id]=todo;
   }
   get todo_s_count(){
-    return Object.keys(this.todo_s).length;
+    return Object.keys(this._todo_s).length;
   }
   write(writeFunc){
-    let string = JSON.stringify(this.todo_s);
+    let string = JSON.stringify(this._todo_s);
     writeFunc(string);
   }
 }
