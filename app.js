@@ -64,6 +64,10 @@ app.get('/logout',(req,res)=>{
   res.setHeader('Set-Cookie',[`sessionid=null;Expires=${new Date(1).toUTCString()}`,`username=null;Expires=${new Date(1).toUTCString()}`]);
   res.redirect('/');
 });
+app.get('/getTodo',(req,res)=>{
+  res.write(fs.readFileSync(`./users/${req.user.userName}.json`));
+  res.end();
+})
 
 app.post('/loginPage.html',(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
@@ -77,26 +81,6 @@ app.post('/loginPage.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/homePage.html');
 });
-
-const addItems = (req,todoHandler)=>{
-  let items = req.body.items;
-  items && items.forEach(content=>todoHandler.addItem(content));
-  return todoHandler;
-}
-
-const addTodo = (req,user,todoHandler)=>{
-    let title = req.body.title;
-    let description = req.body.description;
-    todoHandler.createNew(title,description);
-    todoHandler = addItems(req,todoHandler);
-    return todoHandler;
-}
-
-const writeToFile = (user,todoHandler)=>{
-  let todos = JSON.stringify(todoHandler.todo_s,null,2);
-  fs.writeFileSync(`./users/${user.userName}.json`,todos);
-  return;
-}
 let postAddTodoHandler = new PostAddTodoHandler();
 app.post("/addTodo.html",postAddTodoHandler.requestHandler());
 
