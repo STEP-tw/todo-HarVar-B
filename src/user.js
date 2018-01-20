@@ -4,6 +4,7 @@ class User{
   constructor(name){
     this.userName=name;
     this._todo_s={};
+    this._id = null;
   }
   loadToDo_s(string){
     this._todo_s = JSON.parse(string);
@@ -12,12 +13,23 @@ class User{
       this._todo_s[Object.keys(this._todo_s)[i]].rebuildItems()
     }
   }
-  addItem(id,itemContent){
-    this._todo_s[id].addItem(itemContent);
+  id(){
+    let toDoIds = Object.keys(this.todo_s);
+    if(toDoIds.length==0) this._id = 0;
+    else {
+      let id = toDoIds.reduce((a,b)=>{
+        if(+a>+b)return +a;
+        else return +b;});
+      this._id = ++id;
+    }
   }
-  createNew(title,description,id){
+  addItem(itemContent){
+    this._todo_s[this._id].addItem(itemContent);
+  }
+  createNew(title,description){
     let todo = new ToDo(title,description);
-    this._todo_s[id] = todo;
+    this.id();
+    this._todo_s[this._id] = todo;
   }
   deleteToDo(name){
     delete this._todo_s[name];

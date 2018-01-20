@@ -85,15 +85,15 @@ const getTodoCount = (todoHandler)=>{
 
 const addItems = (req,todoHandler,noOfTodos)=>{
   let items = req.body.items;
-  items && items.forEach(content=>todoHandler.addItem(noOfTodos,content));
+  items && items.forEach(content=>todoHandler.addItem(content));
   return todoHandler;
 }
 
 const addTodo = (req,user,todoHandler,noOfTodos)=>{
     let title = req.body.title;
     let description = req.body.description;
-    todoHandler.createNew(title,description,++noOfTodos);
-    todoHandler = addItems(req,todoHandler,noOfTodos);
+    todoHandler.createNew(title,description);
+    todoHandler = addItems(req,todoHandler);
     return todoHandler;
 }
 
@@ -107,8 +107,8 @@ app.post("/addTodo.html",(req,res)=>{
   let todoHandler = new User(req.cookies.username);
   let user = registered_users.find(u=>u.userName==req.cookies.username);
   todoHandler.loadToDo_s(fs.readFileSync(`./users/${user.userName}.json`));
-  let noOfTodos = getTodoCount(todoHandler);
-  todoHandler = addTodo(req,user,todoHandler,noOfTodos);
+  // let noOfTodos = getTodoCount(todoHandler);
+  todoHandler = addTodo(req,user,todoHandler);
   writeToFile(user,todoHandler);
   res.redirect('/homePage.html');
   res.end();

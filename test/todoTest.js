@@ -20,10 +20,10 @@ describe("ToDo class object should:",()=>{
     let expected=2;
     assert.deepEqual(todo.itemsCount,expected);
   });
-  it.skip("be able to pick a specific item",()=>{
+  it("be able to pick a specific item",()=>{
     todo.addItem("name","description");
-    let expected = new Item("name","description");
-    assert.deepEqual(todo.getItem("name"),expected);
+    let expected = new Item("item1_name","description");
+    assert.deepEqual(todo.getItem("0"),expected);
   });
   it.skip("mark any todo-item as done/undone",()=>{
     todo.addItem("name","description");
