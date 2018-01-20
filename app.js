@@ -3,6 +3,7 @@ const WebApp = require('./webapp');
 const fs = require('fs');
 const handleRequests = require('./serverLib.js').handleRequests;
 const StaticFileHandler = require('./handlers/staticFileHandler');
+const PostAddTodoHandler = require('./handlers/postAddTodoHandler');
 const User = require('./src/user.js');
 let registered_users = require('./users/allUsers.js')._allUsers;
 let toS = o=>JSON.stringify(o,null,2);
@@ -77,19 +78,13 @@ app.post('/loginPage.html',(req,res)=>{
   res.redirect('/homePage.html');
 });
 
-const getTodoCount = (todoHandler)=>{
-  return +Object.keys(todoHandler.todo_s).reduce((a,b)=>{
-    if(+a>+b)return a;
-    else return b;});
-}
-
-const addItems = (req,todoHandler,noOfTodos)=>{
+const addItems = (req,todoHandler)=>{
   let items = req.body.items;
   items && items.forEach(content=>todoHandler.addItem(content));
   return todoHandler;
 }
 
-const addTodo = (req,user,todoHandler,noOfTodos)=>{
+const addTodo = (req,user,todoHandler)=>{
     let title = req.body.title;
     let description = req.body.description;
     todoHandler.createNew(title,description);
@@ -102,16 +97,7 @@ const writeToFile = (user,todoHandler)=>{
   fs.writeFileSync(`./users/${user.userName}.json`,todos);
   return;
 }
-
-app.post("/addTodo.html",(req,res)=>{
-  let todoHandler = new User(req.cookies.username);
-  let user = registered_users.find(u=>u.userName==req.cookies.username);
-  todoHandler.loadToDo_s(fs.readFileSync(`./users/${user.userName}.json`));
-  // let noOfTodos = getTodoCount(todoHandler);
-  todoHandler = addTodo(req,user,todoHandler);
-  writeToFile(user,todoHandler);
-  res.redirect('/homePage.html');
-  res.end();
-});
+let postAddTodoHandler = new PostAddTodoHandler();
+app.post("/addTodo.html",postAddTodoHandler.requestHandler());
 
 module.exports = app;

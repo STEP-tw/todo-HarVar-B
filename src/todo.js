@@ -8,8 +8,9 @@ class ToDo{
     this._noOfItems=0;
   }
   rebuildItems(){
-    for (var i = 0; i < Object.keys(this._items).length; i++) {
-      this._items[Object.keys(this._items)[i]].__proto__=new Item().__proto__;
+    let items = Object.keys(this._items);
+    for (var i = 0; i < items.length; i++) {
+      this._items[items[i]].__proto__=new Item().__proto__;
     }
   }
   get title(){
