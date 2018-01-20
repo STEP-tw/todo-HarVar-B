@@ -50,4 +50,26 @@ describe("a User class object should",()=>{
     expected.addItem("testing");
     assert.deepEqual(harshab.getToDo("0"),expected);
   });
+  it("be able to name the todo by id.",()=>{
+    let expected = null;
+    assert.equal(harshab._id,expected);
+    harshab.id();
+    expected = 0;
+    assert.equal(harshab._id,expected);
+    harshab.createNew("battleship","description");
+    assert.equal(harshab._id,expected);
+    expected++;
+    harshab.createNew("battleship","no need of description");
+    assert.equal(harshab._id,expected);
+    expected++;
+    harshab.createNew("battleship","no need of desc.");
+    assert.equal(harshab._id,expected);
+    expected++;
+  });
+  it("be able to add item to specific todo",()=>{
+    harshab.createNew("battleship","description");
+    harshab.addItem("item1");
+    let expected = new Item("item1");
+    assert.deepEqual(harshab.getToDo('0')._items['0'],expected);
+  });
 });

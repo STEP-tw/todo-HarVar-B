@@ -50,9 +50,5 @@ class User{
   get todo_s(){
     return this._todo_s;
   }
-  write(writeFunc){
-    let string = JSON.stringify(this._todo_s);
-    writeFunc(string);
-  }
 }
 module.exports= User;
