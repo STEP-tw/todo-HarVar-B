@@ -42,7 +42,6 @@ class ToDo{
   editItem(oldName,newName,newDescription){
     let item = this._items[oldName];
     item.changeContent(newName);
-    // if(newDescription)item.setDescription(newDescription);
     this.deleteItem(oldName);
     this._items[newName]=item;
   }

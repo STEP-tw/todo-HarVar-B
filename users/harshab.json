@@ -30,5 +30,42 @@
       }
     },
     "_noOfItems": 2
+  },
+  "3": {
+    "_title": "Ha",
+    "_description": "",
+    "_items": {},
+    "_noOfItems": 0
+  },
+  "4": {
+    "_title": "testing view",
+    "_description": "in a formatted view",
+    "_items": {
+      "0": {
+        "_content": "i",
+        "_isDone": false
+      },
+      "1": {
+        "_content": "don't",
+        "_isDone": false
+      },
+      "2": {
+        "_content": "want",
+        "_isDone": false
+      },
+      "3": {
+        "_content": "to",
+        "_isDone": false
+      },
+      "4": {
+        "_content": "give",
+        "_isDone": false
+      },
+      "5": {
+        "_content": "item names.",
+        "_isDone": false
+      }
+    },
+    "_noOfItems": 6
   }
 }
