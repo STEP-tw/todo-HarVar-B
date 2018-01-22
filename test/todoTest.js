@@ -5,8 +5,8 @@ const ToDo = require('../src/todo.js');
 describe("ToDo class object should:",()=>{
   beforeEach(()=>{
     todo = new ToDo("title","little description");
-    todo.addItem("item1_name","item1_desc");
-    todo.addItem("item2_name","item2_desc");
+    todo.addItem("item1_name");
+    todo.addItem("item2_name");
   });
   it("give title when asked for",()=>{
     let expected= "title";
@@ -25,17 +25,47 @@ describe("ToDo class object should:",()=>{
     let expected = new Item("item1_name","description");
     assert.deepEqual(todo.getItem("0"),expected);
   });
-  it.skip("mark any todo-item as done/undone",()=>{
-    todo.addItem("name","description");
-    todo.tickItem("name");
-    let expected = new Item("name","description");
+  it("mark any todo-item as done/undone",()=>{
+    todo.addItem("name");
+    todo.tickItem("2");
+    let expected = new Item("name");
     expected.tick();
-    assert.deepEqual(todo.getItem("name"),expected);
-    assert.isNotOk(todo.getItem("item1_name").isDone);
+    assert.deepEqual(todo.getItem("2"),expected);
+    assert.isOk(todo.getItem("2").isDone);
   });
   it("be able to delete a todo-item",()=>{
     todo.deleteItem("item1_name");
     assert.deepEqual(todo.getItem("item1_name"),undefined);
+  });
+  describe("get doneItems", ()=>{
+    it("should have zero done items",()=>{
+      let expected = 0;
+      assert.equal(todo.doneItems.length,expected);
+    });
+    it("should have one done item when tickItem() is called", ()=>{
+      let expected = 0;
+      assert.equal(todo.doneItems.length,expected);
+      todo.tickItem('0');
+      expected++;
+      assert.equal(todo.doneItems.length,expected);
+    });
+    it("should undone item when tickItem() is called upon already ticked item", ()=>{
+      todo.tickItem('0');
+      // ticking the item"0"
+      todo.tickItem('0');
+      // unticking the item"0"
+      let expected = 0;
+      assert.equal(todo.doneItems.length,expected);
+    });
+  });
+  it("be able to rebuild prototypes of item object it have",()=>{
+    todo._items["2"]={
+      _content:"item3_name",
+      _isDone:false
+    };
+    todo.rebuildItems();
+    let expected = new Item("item3_name");
+    assert.deepEqual(todo.getItem("2"),expected)
   });
   describe.skip("be able to edit",()=>{
     it("name of item",()=>{

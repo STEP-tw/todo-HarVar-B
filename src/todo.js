@@ -10,6 +10,7 @@ class ToDo{
   rebuildItems(){
     let items = Object.keys(this._items);
     for (var i = 0; i < items.length; i++) {
+      // console.log(JSON.stringify(new Item().__proto__,null,));
       this._items[items[i]].__proto__=new Item().__proto__;
     }
   }
