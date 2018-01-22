@@ -41,7 +41,7 @@ describe("a User class object should",()=>{
   beforeEach(()=>{
     harshab = new User("harshab");
   });
-  it("be able to rebuild todo objects & their behaviour from a json string",()=>{
+  it.skip("be able to rebuild todo objects & their behaviour from a json string",()=>{
     let storagePath = '/Users/pranoyk/pairing_projects/todo-HarVar-B/users/harshab.json';
     let data = fs.readFileSync(storagePath,'utf-8');
     harshab.loadToDo_s(data);

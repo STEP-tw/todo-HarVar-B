@@ -53,13 +53,13 @@ app.get('/loginPage.html',(req,res)=>{
   res.write(fs.readFileSync('./public/loginPage.html','utf-8'));
   res.end();
 });
-app.get("/todoS",(req,res)=>{
-  let user = req.cookies.username;
-  let handler = new User(user);
-  let userData = fs.readFileSync('./users/'+user+'.json','utf-8');
-  res.write(userData);
-  res.end();
-});
+// app.get("/todoS",(req,res)=>{
+//   let user = req.cookies.username;
+//   let handler = new User(user);
+//   let userData = fs.readFileSync('./users/'+user+'.json','utf-8');
+//   res.write(userData);
+//   res.end();
+// });
 app.get('/logout',(req,res)=>{
   res.setHeader('Set-Cookie',[`sessionid=null;Expires=${new Date(1).toUTCString()}`,`username=null;Expires=${new Date(1).toUTCString()}`]);
   res.redirect('/');
@@ -81,7 +81,7 @@ app.post('/loginPage.html',(req,res)=>{
   user.sessionid = sessionid;
   res.redirect('/homePage.html');
 });
-let postAddTodoHandler = new PostAddTodoHandler();
+let postAddTodoHandler = new PostAddTodoHandler(fs);
 app.post("/addTodo.html",postAddTodoHandler.requestHandler());
 
 module.exports = app;

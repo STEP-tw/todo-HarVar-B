@@ -1,5 +1,6 @@
 node_modules/
 test/testFrameWork/
+coverage/
 *.log
 .DS_Store
 .nyc_output
