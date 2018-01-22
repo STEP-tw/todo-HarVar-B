@@ -65,7 +65,8 @@ describe("ToDo class object should:",()=>{
     };
     todo.rebuildItems();
     let expected = new Item("item3_name");
-    assert.deepEqual(todo.getItem("2"),expected)
+    assert.deepEqual(todo.getItem("2"),expected);
+    assert.instanceOf(todo.getItem("2"),Item);
   });
   describe.skip("be able to edit",()=>{
     it("name of item",()=>{

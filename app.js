@@ -43,22 +43,10 @@ let staticFileHandler = new StaticFileHandler();
 app.usePostProcess(staticFileHandler.requestHandler());
 
 app.get('/loginPage.html',(req,res)=>{
-  if(req.user && req.user.sessionid){
-    res.redirect('/homePage.html');
-    res.end();
-    return;
-  }
-  if(req.cookies.logInFailed) {res.write('<p>logIn Failed</p>')};
+  if(req.cookies.logInFailed) {res.write('<p>Login Failed</p>')};
   res.write(fs.readFileSync('./public/loginPage.html','utf-8'));
   res.end();
 });
-// app.get("/todoS",(req,res)=>{
-//   let user = req.cookies.username;
-//   let handler = new User(user);
-//   let userData = fs.readFileSync('./users/'+user+'.json','utf-8');
-//   res.write(userData);
-//   res.end();
-// });
 app.get('/logout',(req,res)=>{
   res.setHeader('Set-Cookie',[`sessionid=null;Expires=${new Date(1).toUTCString()}`,`username=null;Expires=${new Date(1).toUTCString()}`]);
   res.redirect('/');

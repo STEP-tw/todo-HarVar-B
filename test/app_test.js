@@ -13,6 +13,15 @@ describe('app',()=>{
       })
     })
   })
+  describe('GET /loginPage.html',()=>{
+    it('responds with 200 and error message',done=>{
+      request(app,{method:'GET',url:'/loginPage.html',headers:{"cookie": "logInFailed=true"}},(res)=>{
+        th.status_is_ok(res);
+        th.body_contains( res,"Login Failed");
+        done();
+      })
+    })
+  })
   describe('GET /',()=>{
     it('redirects to login',()=>{
       request(app,{method:'GET',url:'/'},(res)=>{
@@ -27,6 +36,22 @@ describe('app',()=>{
         th.should_be_redirected_to(res,'/homePage.html');
         th.body_contains(res,'');
         done()
+      });
+    });
+  });
+  describe("GET getTodo, with userName",()=>{
+    it("gives JSON object for xhr",()=>{
+      request(app,{method:'GET',url:'/getTodo',user:{'userName':'harshab'}},(res)=>{
+        th.status_is_ok(res);
+        th.body_contains(res,"");
+      });
+    });
+  });
+  describe("GET logout, with userName",()=>{
+    it("redirects to /",()=>{
+      request(app,{method:'GET',url:'/logout',user:{'userName':'harshab'}},(res)=>{
+        th.should_be_redirected_to(res,'/');
+        th.body_contains(res,"");
       });
     });
   });

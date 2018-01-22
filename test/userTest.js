@@ -2,7 +2,6 @@ const User = require('../src/user.js');
 const ToDo = require('../src/todo.js');
 const Item = require('../src/item.js');
 
-const fs =require('fs');
 const assert = require('chai').assert;
 
 describe("A User class object should:",()=>{
@@ -37,18 +36,27 @@ describe("A User class object should:",()=>{
     });
   });
 });
-describe("a User class object should",()=>{
+describe("A User class object should",()=>{
   beforeEach(()=>{
     harshab = new User("harshab");
   });
-  it.skip("be able to rebuild todo objects & their behaviour from a json string",()=>{
-    let storagePath = '/Users/pranoyk/pairing_projects/todo-HarVar-B/users/harshab.json';
-    let data = fs.readFileSync(storagePath,'utf-8');
+  it("be able to rebuild todo objects & their behaviour from a json string",()=>{
+    let data = "{}";
     harshab.loadToDo_s(data);
-    let expected = new ToDo("Pranoy","Kundu");
-    expected.addItem("is");
-    expected.addItem("testing");
-    assert.deepEqual(harshab.getToDo("0"),expected);
+    let expected = {};
+    assert.deepEqual(harshab._todo_s,expected);
+  });
+  it("be able to rebuild todo objects & their behaviour from a json string",()=>{
+    let data = `{"0": {
+      "_title": "Pranoy",
+      "_description": "Testing with null",
+      "_items": {},
+      "_noOfItems": 0
+    }}`;
+    harshab.loadToDo_s(data);
+    let expected = new ToDo("Pranoy","Testing with null");
+    assert.deepEqual(harshab._todo_s["0"],expected);
+    assert.instanceOf(harshab._todo_s["0"],ToDo);
   });
   it("be able to name the todo by id.",()=>{
     let expected = null;
