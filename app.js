@@ -1,7 +1,6 @@
 const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
 const fs = require('fs');
-const handleRequests = require('./serverLib.js').handleRequests;
 const StaticFileHandler = require('./handlers/staticFileHandler');
 const PostAddTodoHandler = require('./handlers/postAddTodoHandler');
 const User = require('./src/user.js');
