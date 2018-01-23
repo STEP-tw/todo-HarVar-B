@@ -34,6 +34,9 @@ class User{
   deleteToDo(name){
     delete this._todo_s[name];
   }
+  deleteItem(todo,item){
+    this._todo_s[todo].deleteItem(item);
+  }
   getToDo(id){
     return this._todo_s[id];
   }

@@ -22,17 +22,17 @@ const parseCookies = text=> {
   }catch(e){
     return {};
   }
-}
+};
 let invoke = function(req,res){
   let handler = this._handlers[req.method][req.url];
   handler && handler(req,res);
-}
+};
 let serve404 = function(req,res){
   console.log(`Illegal file requseted ${req.url}`);
   res.statusCode = 404;
   res.write(`File not found`);
   res.end();
-}
+};
 const initialize = function(){
   this._handlers = {GET:{},POST:{}};
   this._preprocess = [];
@@ -40,7 +40,7 @@ const initialize = function(){
 };
 const get = function(url,handler){
   this._handlers.GET[url] = handler;
-}
+};
 const post = function(url,handler){
   this._handlers.POST[url] = handler;
 };
@@ -52,7 +52,7 @@ const usePostProcess = function(handler){
 };
 let urlIsOneOf = function(urls){
   return urls.includes(this.url);
-}
+};
 const main = function(req,res){
   res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);

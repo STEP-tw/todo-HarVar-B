@@ -1,9 +1,9 @@
 const timeStamp = require('./time.js').timeStamp;
 const WebApp = require('./webapp');
 const fs = require('fs');
+let User = require('./src/user.js');
 const StaticFileHandler = require('./handlers/staticFileHandler');
 const PostAddTodoHandler = require('./handlers/postAddTodoHandler');
-const User = require('./src/user.js');
 let registered_users = require('./users/allUsers.js')._allUsers;
 let toS = o=>JSON.stringify(o,null,2);
 /*============================================================================*/
@@ -71,4 +71,15 @@ app.post('/loginPage.html',(req,res)=>{
 let postAddTodoHandler = new PostAddTodoHandler(fs);
 app.post("/addTodo.html",postAddTodoHandler.requestHandler());
 
+app.post("/updateTodo",(req,res)=>{
+  let todoHandler = new User(req.cookies.username);
+  let user = registered_users.find(u=>u.userName==req.cookies.username);
+  todoHandler.loadToDo_s(fs.readFileSync(`./users/${user.userName}.json`));
+  let action = req.body.action;
+  let todo = req.body.todoId;
+  let item = req.body.itemId;
+  todoHandler[action](todo,item);
+  fs.writeFileSync(`./users/${user.userName}.json`,JSON.stringify(todoHandler._todo_s,null,2));
+  res.end();
+})
 module.exports = app;

@@ -1,33 +1,37 @@
-const processItems = (todo)=>{
+const processItems = (todo,todoId)=>{
   let itemsBox = document.getElementById("items");
   let allItems = todo._items;
   let itemsId = Object.keys(allItems);
-  content = ""
+  content = `<tr><td><b>Items<b></td><td></td></tr>`
   itemsId.forEach(id=>{
-    content+=`<input type="checkbox" name="" value=""></input>
-    <input id="items"type="text" name="items" value="${allItems[id]._content}"></input><br>`
+    content+=`<tr id="${id}">`
+    content+=`<td><input  type="checkbox" name="" value=""`;
+    allItems[id]['_isDone'] && (content+=`checked`);
+    content+=`></input></td>`;
+    content+=`<td>${allItems[id]._content}</td>`
+    content+=`<td><button type="button" onclick="editItem(event)">Edit</button></td>`;
+    content+=`<td><button type="button" onclick="deleteItem(event,${todoId},${id})">Delete</button></td>`;
   });
   return content;
 }
 const processTitle=(_title)=>{
-  return `Title :<input id="title"type="text" name="title" value='${_title}'></input>`;
+  return `<tr><td><b>Title<b></td><td>${_title}</td></tr>`;
 }
 const processdescription=(_description)=>{
-  return `Description :<input id="title"type="text" name="title" value='${_description}'></input>`;
+  return `<tr><td><b>Description<b></td><td>${_description}</td></tr>`;
 }
-const expandTodo = (id)=>{
-  let reqTodo = userTodos[id];
+const expandTodo = (todoId)=>{
+  let reqTodo = userTodos[todoId];
   let title = reqTodo._title;
   let description = reqTodo._description;
   let titleBox = document.getElementById("title");
   let descriptionBox = document.getElementById("description");
   let formDiv = document.getElementById("form");
-  let content = `<form class="todo" action="/updateTodo" method="post">`;
-  content+= processTitle(title);
+  let content =`<table>`
+  content+=processTitle(title);
   content+= processdescription(description);
-  content+=`<br>Items :<br>`
-  content+= processItems(reqTodo);
-  content+= `<button type="submit" name="submit">Submit</button>
-</form>`
+  content+=processItems(reqTodo,todoId);
+  content+=`<tr><td></td><td><button type="button" style="font-size:16px">Save</button></td></tr>`
+  content+=`</table>`
   formDiv.innerHTML=content;
 }
