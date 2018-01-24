@@ -26,8 +26,8 @@ class PostAddTodoHandler extends DefaultHandler {
     return;
   }
   execute(req,res){
-    let todoHandler = new User(req.cookies.username);
-    let user = registered_users.find(u=>u.userName==req.cookies.username);
+    let todoHandler = new User(req.cookies.userName);
+    let user = registered_users.find(u=>u.userName==req.cookies.userName);
     todoHandler.loadToDo_s(this.fs.readFileSync(`./users/${user.userName}.json`));
     todoHandler = this.addTodo(req,todoHandler);
     this.writeToFile(user,todoHandler);
