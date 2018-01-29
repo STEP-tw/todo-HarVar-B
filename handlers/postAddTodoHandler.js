@@ -22,13 +22,13 @@ class PostAddTodoHandler extends DefaultHandler {
   }
   writeToFile(user,todoHandler){
     let todos = JSON.stringify(todoHandler.todo_s,null,2);
-    this.fs.writeFileSync(`./users/${user.userName}.json`,todos);
+    this.fs.writeFileSync(`./users/${user.username}.json`,todos);
     return;
   }
   execute(req,res){
-    let todoHandler = new User(req.cookies.userName);
-    let user = registered_users.find(u=>u.userName==req.cookies.userName);
-    todoHandler.loadToDo_s(this.fs.readFileSync(`./users/${user.userName}.json`));
+    let todoHandler = new User(req.cookies.username);
+    let user = req.user;
+    todoHandler.loadToDo_s(this.fs.readFileSync(`./users/${user.username}.json`));
     todoHandler = this.addTodo(req,todoHandler);
     this.writeToFile(user,todoHandler);
     res.redirect('/homePage.html');

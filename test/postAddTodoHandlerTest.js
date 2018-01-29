@@ -56,6 +56,7 @@ describe("postAddTodoHandler() class object",()=>{
 
   describe("execute()", ()=>{
     it("should create todo depending on req.body and redirect to homePage",()=>{
+      req.user={username:'harshab',name:'Harsha Vardhana B',id:'21001'}
       req.cookies = {};
       req.cookies.username = "harshab";
       let fs = {

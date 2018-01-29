@@ -2,7 +2,7 @@ const ToDo = require('./todo.js');
 
 class User{
   constructor(name){
-    this.userName=name;
+    this.username=name;
     this._todo_s={};
     this._id = null;
   }
