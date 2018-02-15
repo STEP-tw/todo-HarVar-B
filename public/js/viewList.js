@@ -9,7 +9,7 @@ const getTodos = ()=>{
       content+=`<li id=todo_${id} ondblclick=expandTodo(${id})>`
       content+=userTodos[id]._title;
       content+=`</li>`
-      content+=`<br>`
+      // content+=`<br>`
     });
     titles.innerHTML = content;
   }

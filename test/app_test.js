@@ -2,7 +2,6 @@ const chai = require('chai');
 const assert = chai.assert;
 const request = require('supertest');
 const app = require('../app.js');
-const th = require('./testHelper.js');
 
 const hasCookies = (cookies)=>{
   return (res)=>{
@@ -132,12 +131,6 @@ describe('app',()=>{
         .expect(200)
         .expect('Content-Type',/html/)
         .end(done);
-      // request(app,{method:'GET',url:'/homePage.html',user:'harshab',headers:{cookie:{sessionid:123456}}},(res)=>{
-      //   th.status_is_ok(res);
-      //   th.content_type_is(res,'text/html');
-      //   th.body_contains(res,'TODO app');
-      //   done()
-      // });
     });
   });
 });

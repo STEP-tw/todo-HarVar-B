@@ -6,17 +6,19 @@
     <script src="js/addTodo.js" charset="utf-8"></script>
   </head>
   <body>
+    <a id='logoutLink' href="/logout">Logout</a>
+    <a id='homePageLink' href="/homePage.html">Home</a>
+    <hr>
     <div>
       <form method="post">
         Title:
-        <input type="text" name="title" value="" required>
+        <input id='todoTitle'type="text" name="title" value="" required>
         Description:
-          <input type="text" name="description" value="">
+          <input id='todoDescription'type="text" name="description" value="">
         <div id="addItem">
-
         </div>
-        <button type="button" onclick="addMoreItem()"> Add a new item </button>
-        <input type="submit" name="submit" value="submit">
+        <button id="addMoreItemButton"type="button" onclick="addMoreItem()"> Add a new item </button>
+        <input id='newTodoDetailsSubmitButton'type="submit" name="submit" value="submit">
       </form>
     </div>
   </body>
